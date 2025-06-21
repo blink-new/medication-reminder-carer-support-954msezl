@@ -85,34 +85,40 @@ export default function Home() {
             <Text style={styles.sectionTitle}>Medications</Text>
             {todaysMeds.map((medication) => (
               <View key={medication.id} style={styles.medicationCard}>
-                <View style={styles.medicationInfo}>
-                  <View style={styles.medicationHeader}>
-                    <Text style={styles.medicationName}>{medication.name}</Text>
-                    <View style={[
-                      styles.timeChip,
-                      getTimeStatus(medication.scheduleTime) === 'overdue' && !medication.takenToday
-                        ? styles.timeChipOverdue
-                        : styles.timeChipNormal
-                    ]}>
-                      <Clock size={12} color={
-                        getTimeStatus(medication.scheduleTime) === 'overdue' && !medication.takenToday
-                          ? '#dc2626'
-                          : '#6b7280'
-                      } />
-                      <Text style={[
-                        styles.timeText,
-                        getTimeStatus(medication.scheduleTime) === 'overdue' && !medication.takenToday
-                          ? styles.timeTextOverdue
-                          : styles.timeTextNormal
-                      ]}>
-                        {medication.scheduleTime}
-                      </Text>
-                    </View>
-                  </View>
+                {/* Left Section: Name and Dosage */}
+                <View style={styles.medicationDetails}>
+                  <Text style={styles.medicationName}>{medication.name}</Text>
                   <Text style={styles.medicationDosage}>{medication.dosage}</Text>
                 </View>
-                
-                <View style={styles.actionContainer}>
+
+                {/* Center Section: Time Indicator */}
+                <View style={[
+                  styles.medicationTimeContainer, 
+                ]}>
+                  <View style={[
+                    styles.timeChip,
+                    getTimeStatus(medication.scheduleTime) === 'overdue' && !medication.takenToday
+                      ? styles.timeChipOverdue
+                      : styles.timeChipNormal
+                  ]}>
+                    <Clock size={12} color={
+                      getTimeStatus(medication.scheduleTime) === 'overdue' && !medication.takenToday
+                        ? '#dc2626'
+                        : '#6b7280'
+                    } />
+                    <Text style={[
+                      styles.timeText,
+                      getTimeStatus(medication.scheduleTime) === 'overdue' && !medication.takenToday
+                        ? styles.timeTextOverdue
+                        : styles.timeTextNormal
+                    ]}>
+                      {medication.scheduleTime}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Right Section: Action Button/Indicator */}
+                <View style={styles.medicationActionContainer}>
                   {medication.takenToday ? (
                     <View style={styles.takenIndicator}>
                       <CheckCircle color="#10b981" size={24} />
@@ -222,26 +228,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    flexWrap: 'nowrap', 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 1,
   },
-  medicationInfo: {
-    flex: 1,
+  medicationDetails: {
+    flex: 1, 
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
-  medicationHeader: {
-    flexDirection: 'row',
+  medicationTimeContainer: {
+    flex: 0, 
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
+    justifyContent: 'center',
+  },
+  medicationActionContainer: {
+    flex: 0, 
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   medicationName: {
     fontSize: 16,
     fontWeight: '600',
     color: '#1e293b',
-    flex: 1,
   },
   timeChip: {
     flexDirection: 'row',
@@ -249,7 +261,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
-    marginLeft: 8,
+    paddingRight: 12,
   },
   timeChipNormal: {
     backgroundColor: '#f1f5f9',
@@ -258,7 +270,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fef2f2',
   },
   timeText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
     marginLeft: 4,
   },
@@ -277,11 +289,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
+    width: 120, 
+    overflow: 'hidden', 
   },
   takeButtonText: {
     color: '#ffffff',
     fontSize: 14,
     fontWeight: '600',
+    numberOfLines: 1, 
+    ellipsizeMode: 'clip', 
   },
   takenIndicator: {
     flexDirection: 'row',
@@ -292,10 +308,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     marginLeft: 4,
-  },
-  actionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
 });
